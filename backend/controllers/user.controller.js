@@ -9,7 +9,6 @@ export const register = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("Fill in all fields properly"))
     }
     const isEmail = await User.findOne({ email: email });
-    console.log(isEmail);
     if (isEmail) {
         return next(new ErrorHandler("Email Already Exist"))
     }
@@ -53,4 +52,8 @@ export const Logout = catchAsyncError(async (req, res, next) => {
         success: true,
         message: "Logged Out"
     })
+})
+export const getUser = catchAsyncError(async function (req, res, next) {
+    const user = req.user
+    res.status(200).json(user)
 })

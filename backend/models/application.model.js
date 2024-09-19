@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 import validator from "validator";
+
 const applicationSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true,
-        minLenghth: [3, "Name must contain at least 3 characters "],
-        minLenghth: [30, "Name cannot contain  30 characters "],
+        required: [true, "Please provide the name"],
+        minlength: [3, "Name must contain at least 3 characters"],
+        maxlength: [30, "Name cannot contain more than 30 characters"],
     },
     email: {
         type: String,
-        required: [true, "Pleas provide your email"],
-        validator: [validator.isEmail, "Please provide valid Email"]
+        required: [true, "Please provide your email"],
+        validate: [validator.isEmail, "Please provide a valid email"]
     },
     coverLetter: {
         type: String,
@@ -18,33 +19,31 @@ const applicationSchema = mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: [true, "Please provide your Phone no."],
+        required: [true, "Please provide your phone number"],
     },
     address: {
         type: String,
-        required: [true, "Please provide your Address"],
+        required: [true, "Please provide your address"],
     },
     resume: {
         public_id: {
+            type: String,
             required: true,
-            tpye: String,
         },
         url: {
             type: String,
-            required: true
-        },
-        applicantId: {
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                required: true
-            }
+            required: true,
         }
     },
-    role: {
+    applicantId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
-        , type: String,
-        emum: ["Job Seeker"]
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ["Job Seeker"]
     },
     employeerId: {
         user: {
@@ -53,10 +52,10 @@ const applicationSchema = mongoose.Schema({
             required: true
         },
         role: {
-            required: true
-            , type: String,
-            emum: ["Employeer"]
+            type: String,
+            required: true,
+            enum: ["Employeer"]
         }
     }
-})
-export const Application = mongoose.model("Applicatoin", applicationSchema)
+});
+export const Application = mongoose.model("Application", applicationSchema);
